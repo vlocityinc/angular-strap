@@ -180,6 +180,12 @@ angular.module('mgcrea.ngStrap.tooltip', ['mgcrea.ngStrap.core', 'mgcrea.ngStrap
           if (angular.isDefined(options.onBeforeShow) && angular.isFunction(options.onBeforeShow)) {
             options.onBeforeShow($tooltip);
           }
+
+          // MG: this should be before getting the parent/after
+          //     since a previous tipElement maybe still be there
+          // Hide any existing tipElement
+          if (tipElement) destroyTipElement();
+
           var parent;
           var after;
           if (options.container) {
@@ -194,9 +200,6 @@ angular.module('mgcrea.ngStrap.tooltip', ['mgcrea.ngStrap.core', 'mgcrea.ngStrap
             after = element;
           }
 
-
-          // Hide any existing tipElement
-          if (tipElement) destroyTipElement();
           // Fetch a cloned element linked from template
           tipScope = $tooltip.$scope.$new();
           tipElement = $tooltip.$element = compileData.link(tipScope, function (clonedElement, scope) {});
